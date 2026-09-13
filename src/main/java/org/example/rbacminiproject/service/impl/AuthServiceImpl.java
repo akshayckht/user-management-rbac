@@ -5,19 +5,21 @@ import org.example.rbacminiproject.entity.Role;
 import org.example.rbacminiproject.entity.User;
 import org.example.rbacminiproject.exception.DuplicateEmailException;
 import org.example.rbacminiproject.repository.UserRepository;
-import org.example.rbacminiproject.service.UserService;
+import org.example.rbacminiproject.service.AuthService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
-
 @Service
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Override
     public void registerUser(UserSignUpRequest request) {
@@ -29,13 +31,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(mapToUser(request));
     }
 
+    // mapping logic
     private User mapToUser(UserSignUpRequest request) {
         User user = new User();
 
         user.setName(request.name());
         user.setEmail(request.email());
-        user.setPassword(request.password());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole(Role.USER);
         return user;
     }
+
 }

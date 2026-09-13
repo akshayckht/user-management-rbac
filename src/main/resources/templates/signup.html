@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>Sign up</title>
     <link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
@@ -51,16 +51,22 @@
                     <h1 class="text-slate-900 text-2xl font-bold dark:text-slate-50">Create an account
                     </h1>
                 </div>
+
                 <!--                Signup form-->
                 <form th:action="@{/signup}"
                       th:object="${userSignupRequest}"
                       th:method="post"
                       class="space-y-6">
+
                     <div>
                         <label for="name"
                                class="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50">Name</label>
                         <input th:field="*{name}" type="text" id="name" name="name" placeholder="Name" required
                                class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"/>
+                        <p th:if="${#fields.hasErrors('name')}"
+                           th:errors="*{name}"
+                           class="mt-1 text-sm text-red-600">
+                        </p>
                     </div>
                     <div>
                         <label for="email"
@@ -68,6 +74,10 @@
                         <input th:field="*{email}" type="email" id="email" name="email"
                                placeholder="john@readymadeui.com" required
                                class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"/>
+
+                        <p th:if="${#fields.hasErrors('email')}"
+                           th:errors="*{email}"
+                           class="mt-1 text-sm text-red-600">
                     </div>
                     <div>
                         <label for="password"
@@ -75,6 +85,10 @@
                         <input th:field="*{password}"
                                type="password" id="password" name="password" placeholder="••••••••" required
                                class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"/>
+                        <p th:if="${#fields.hasErrors('password')}"
+                           th:errors="*{password}"
+                           class="mt-1 text-sm text-red-600">
+                        </p>
                     </div>
                     <div>
                         <label for="confirm-password"

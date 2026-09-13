@@ -1,5 +1,5 @@
 
-Spring:
+spring:
   datasource:
     url: "${DB_URL:jdbc:postgresql://localhost:5432/springapp_db}"
     username: "${DB_USER_NAME:spring}"
@@ -7,7 +7,7 @@ Spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

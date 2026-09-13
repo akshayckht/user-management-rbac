@@ -1,6 +1,11 @@
 package org.example.rbacminiproject.controller;
 
+import jakarta.servlet.http.HttpSession;
+
+import org.example.rbacminiproject.dto.LoginRequest;
 import org.example.rbacminiproject.dto.UserSignUpRequest;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +26,25 @@ public class PageController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model, Authentication authentication) {
+
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken)) {
+
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("loginRequest", new LoginRequest(null, null));
+
         return "login";
     }
+
+    @GetMapping("/dashboard")
+    public String dashboard(HttpSession session, Model model) {
+
+        return "dashboardUser";
+    }
+
+
 }

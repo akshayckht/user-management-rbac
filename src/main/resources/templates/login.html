@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Log in</title>
     <link rel="stylesheet" th:href="@{/css/output.css}">
+    <script type="text/javascript" th:src="@{/js/app.js}"></script>
 </head>
 <body>
 <main class="bg-gray-50 flex items-center justify-center lg:h-screen py-4 px-4 md:px-8 dark:bg-neutral-900">
@@ -23,13 +24,21 @@
                 <div class="mb-10">
                     <h1 class="text-3xl font-bold text-blue-700 dark:text-blue-500">Sign in</h1>
                 </div>
-
-                <form class="space-y-6">
+                <div th:if="${param.error}"
+                     class="mb-4 p-3 rounded-md bg-red-50 border border-red-200 text-red-700">
+                    Invalid email or password.
+                </div>
+                <form th:action="@{/login}"
+                      method="post"
+                        class="space-y-6">
                     <div>
                         <label class="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50"
                                for="email">Email</label>
-                        <input class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" id="email" name="email" placeholder="john@readymadeui.com" required
-                               type="email"/>
+                        <input type="email"
+                               name="username"
+                               class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                               id="email" placeholder="john@mail.com" required
+                               />
                     </div>
                     <div class="relative">
                         <label class="mb-2 text-slate-900 font-medium text-sm inline-block dark:text-slate-50"
@@ -49,7 +58,9 @@
                             </svg>
                         </button>
 
-                        <input class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600" id="password" name="password" placeholder="••••••••" required
+                        <input name="password"
+                               class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+                               id="password" placeholder="••••••••" required
                                type="password"/>
                     </div>
 

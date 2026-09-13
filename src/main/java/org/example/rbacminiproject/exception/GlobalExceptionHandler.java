@@ -1,6 +1,6 @@
 package org.example.rbacminiproject.exception;
 
-
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,13 +15,13 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-    @ExceptionHandler(DuplicateEmailException.class)
-    public String handleDuplicateEmailException(DuplicateEmailException e, Model model){
 
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public String handleUserNameNotFoundException(UsernameNotFoundException e, Model model) {
 
+        model.addAttribute("exception", e.getName());
 
-        return "signup";
+        return "login";
     }
-
 
 }
