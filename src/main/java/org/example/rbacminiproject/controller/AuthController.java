@@ -34,9 +34,6 @@ public class AuthController {
             return "signup";
         }
 
-        authService.registerUser(request);
-
         return "redirect:/login";
     }
-    
 }
