@@ -10,10 +10,15 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final RoleBasedAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    public SecurityConfig(RoleBasedAuthenticationSuccessHandler authenticationSuccessHandler) {
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -21,20 +26,21 @@ public class SecurityConfig {
                         auth ->
                                 auth.requestMatchers("/", "/signup", "/login", "/css/**", "/js/**")
                                         .permitAll()
+                                        .requestMatchers("/admin/**")
+                                        .hasRole("ADMIN")
+                                        .requestMatchers("/dashboard")
+                                        .hasRole("USER")
                                         .anyRequest()
                                         .authenticated())
                 .formLogin(
                         form ->
                                 form.loginPage("/login")
-                                        .defaultSuccessUrl("/dashboard", true)
+                                        .successHandler(authenticationSuccessHandler)
                                         .permitAll())
                 .logout(
                         logout ->
                                 logout.logoutUrl("/logout").logoutSuccessUrl("/login").permitAll())
-
-        .headers(headers -> headers
-                .cacheControl(cache -> {})
-        );
+                .headers(headers -> headers.cacheControl(cache -> {}));
 
         return http.build();
     }
