@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Objects;
 
+@Slf4j
 @Component
 public class RoleBasedAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     /**
@@ -26,12 +28,17 @@ public class RoleBasedAuthenticationSuccessHandler implements AuthenticationSucc
     public void onAuthenticationSuccess(
             @NonNull HttpServletRequest request, @NonNull HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
+
+        log.info("Success Handler called");
         if (authentication.getAuthorities().stream()
                 .anyMatch(authority -> Objects.equals(authority.getAuthority(), "ROLE_ADMIN"))) {
 
+            log.info("is admin");
             response.sendRedirect("/admin/dashboard");
             return;
         }
+
+        log.info("not admin");
 
         response.sendRedirect("/dashboard");
     }
