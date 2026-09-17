@@ -57,7 +57,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public User createUser(AdminUserCreateRequest request) {
+    public void createUser(AdminUserCreateRequest request) throws DuplicateEmailException {
 
         if (userRepository.existsByEmail(request.email())) {
             throw new DuplicateEmailException("Email id already registered");
@@ -71,18 +71,18 @@ public class AdminServiceImpl implements AdminService {
 
         if (Objects.equals(request.role(), Role.USER.name())) {
             user.setRole(Role.USER);
-        } else {
+        } else if (Objects.equals(request.role(), Role.ADMIN.name())) {
             user.setRole(Role.ADMIN);
         }
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
 
 
     @Override
     @Transactional
-    public void updateUser(Long id, AdminUserUpdateRequest request) {
+    public void updateUser(Long id, AdminUserUpdateRequest request) throws DuplicateEmailException {
 
         User user = getUserById(id);
 
@@ -94,7 +94,12 @@ public class AdminServiceImpl implements AdminService {
 
         user.setName(request.name());
         user.setEmail(request.email());
-        user.setRole(request.role());
+        if (request.role().equals(Role.USER.name())){
+            user.setRole(Role.USER);
+        }else if(request.role().equals(Role.ADMIN.name())){
+            user.setRole(Role.ADMIN);
+        }
+
 
         userRepository.save(user);
     }

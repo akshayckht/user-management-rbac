@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public void registerUser(UserSignUpRequest request) {
+    public void registerUser(UserSignUpRequest request) throws DuplicateEmailException{
 
         if (userRepository.existsByEmail(request.email())) {
             throw new DuplicateEmailException("Email id already registered");

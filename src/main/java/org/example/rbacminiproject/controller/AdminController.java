@@ -1,8 +1,11 @@
 package org.example.rbacminiproject.controller;
 
 import jakarta.validation.Valid;
+
 import org.example.rbacminiproject.dto.AdminUserCreateRequest;
+import org.example.rbacminiproject.dto.AdminUserUpdateRequest;
 import org.example.rbacminiproject.entity.User;
+import org.example.rbacminiproject.exception.DuplicateEmailException;
 import org.example.rbacminiproject.service.AdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,9 +51,21 @@ public class AdminController {
 
     @PostMapping("/createuser/user")
     public String createUser(
-            @Valid @ModelAttribute("adminUserCreateRequest") AdminUserCreateRequest request, BindingResult bindingResult, Model model) {
+            @Valid @ModelAttribute("adminUserCreateRequest") AdminUserCreateRequest request,
+            BindingResult bindingResult) {
 
-        User user = adminService.createUser(request);
+        if (bindingResult.hasErrors()) {
+            return "admin/createUser";
+        }
+
+        try {
+            adminService.createUser(request);
+        } catch (DuplicateEmailException e) {
+
+            bindingResult.rejectValue("email", "email.exists", e.getMessage());
+
+            return "admin/createUser";
+        }
 
         return "redirect:/admin/dashboard";
     }
@@ -59,6 +74,41 @@ public class AdminController {
     public String deleteUser(@PathVariable Long id){
 
         adminService.deleteUser(id);
+
+        return "redirect:/admin/dashboard";
+    }
+
+    @GetMapping("/user/{id}/edit")
+    public String getEditForm(@PathVariable Long id, Model model) {
+
+        User user = adminService.getUserById(id);
+
+        AdminUserUpdateRequest adminUserUpdateRequest =
+                new AdminUserUpdateRequest(user.getName(), user.getEmail(), user.getRole().name());
+
+        model.addAttribute("adminUserUpdateRequest", adminUserUpdateRequest);
+        model.addAttribute("userid", id);
+
+        return "admin/editUser";
+    }
+
+    @PostMapping("/user/{id}/update")
+    public String updateUser(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("adminUserUpdateRequest") AdminUserUpdateRequest request,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "admin/userUpdateFailed";
+        }
+
+        try {
+            adminService.updateUser(id, request);
+        } catch (DuplicateEmailException e) {
+
+            bindingResult.rejectValue("email", "email.exists", e.getMessage());
+            return "admin/userUpdateFailed";
+        }
 
         return "redirect:/admin/dashboard";
     }

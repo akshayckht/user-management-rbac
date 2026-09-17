@@ -15,7 +15,7 @@ public interface AdminService {
 
     User getUserById(Long id);
 
-    User createUser(AdminUserCreateRequest request);
+    void createUser(AdminUserCreateRequest request);
 
     void updateUser(Long id, AdminUserUpdateRequest request);
 

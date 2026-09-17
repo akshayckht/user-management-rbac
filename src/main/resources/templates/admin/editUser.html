@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crate User</title>
+    <title>Edit User</title>
     <link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
 <body>
+
 <main class="h-screen">
     <div class="flex items-start h-full">
         <!-- sidebar -->
@@ -71,7 +72,7 @@
                     <form th:action="@{/admin/dashboard}"
                           method="get">
                         <h1 class="text-xl text-slate-900 font-bold dark:text-slate-50">
-                            <button type="submit">Admin Dashboard</button>
+                            <button type="submit" >Admin Dashboard</button>
                         </h1>
                     </form>
 
@@ -107,41 +108,30 @@
 
             <!-- middle contents -->
             <section class="p-6">
-                <form th:action="@{/admin/createuser/user}"
-                      th:object="${adminUserCreateRequest}"
-                      method="post"
-                        class="px-4 mt-6">
-
+                <form
+                        th:action="@{/admin/user/{id}/update(id=${userid})}"
+                        th:object="${adminUserUpdateRequest}"
+                        method="post"
+                      class="px-4 mt-6">
                     <div class="space-y-6 max-w-md mx-auto">
                         <div>
                             <label for="name"
                                    class="text-slate-900 font-medium text-[14px] inline-block mb-1">Name</label>
-                            <input th:field="*{name}" type="text" id="name" name="name" placeholder="John Smith" required
+                            <input th:field="*{name}"
+                                    type="text" id="name" name="name" placeholder="John Smith" required
                                    class="px-1 py-2.5 text-sm text-slate-900 bg-white w-full border-b-2 border-slate-300 focus:border-blue-600 outline-none"/>
                             <p th:if="${#fields.hasErrors('name')}"
                                th:errors="*{name}"
                                class="mt1 text-sm text-red-600"></p>
                         </div>
-
                         <div>
                             <label for="email"
                                    class="text-slate-900 font-medium text-[13px] inline-block mb-1">Email</label>
                             <input th:field="*{email}"
-                                    type="email" id="email" name="email" placeholder="john@readymadeui.com" required
+                                   type="email" id="email" name="email" placeholder="john@readymadeui.com" required
                                    class="px-1 py-2.5 text-sm text-slate-900 bg-white w-full border-b-2 border-slate-300 focus:border-blue-600 outline-none"/>
                             <p th:if="${#fields.hasErrors('email')}"
                                th:errors="*{email}"
-                               class="mt1 text-sm text-red-600"></p>
-                        </div>
-                        <div>
-                            <label for="password"
-                                   class="text-slate-900 font-medium text-[14px] inline-block mb-1">Password</label>
-                            <input
-                                    th:field="*{password}"
-                                    type="password" id="password" name="password" placeholder="**********" required
-                                   class="px-1 py-2.5 text-sm text-slate-900 bg-white w-full border-b-2 border-slate-300 focus:border-blue-600 outline-none"/>
-                            <p th:if="${#fields.hasErrors('password')}"
-                               th:errors="*{password}"
                                class="mt1 text-sm text-red-600"></p>
                         </div>
 
@@ -149,7 +139,7 @@
                             <label for="roel"
                                    class="text-slate-900 font-medium text-[14px] inline-block mb-1">Role</label>
                             <select
-                                    th:field="*{role}"
+                                    th:fiel="*{role}"
                                     id="roel" name="role"
                                     class="px-1 py-2.5 text-sm text-slate-900 bg-white w-full border-b-2 border-slate-300 focus:border-blue-600 outline-none">
                                 <option value="USER">USER</option>
@@ -171,5 +161,6 @@
 
     </div>
 </main>
+
 </body>
 </html>
