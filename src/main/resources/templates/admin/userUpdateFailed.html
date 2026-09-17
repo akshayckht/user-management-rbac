@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Update Failed</title>
+
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+
+<body class="min-h-screen bg-slate-50 flex items-center justify-center">
+
+<div class="w-full max-w-md bg-white border border-slate-200 rounded-lg shadow-sm p-8">
+
+    <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+        <span class="text-2xl text-red-600">✕</span>
+    </div>
+
+    <h1 class="text-xl font-bold text-slate-900 text-center mb-3">
+        User Update Failed
+    </h1>
+
+    <p class="text-sm text-slate-600 text-center mb-5">
+        The user could not be updated because of the following:
+    </p>
+
+    <div class="bg-red-50 border border-red-200 rounded-md p-4 text-left">
+        <ul class="list-disc list-inside space-y-2 text-sm text-red-700">
+            <li>Name is invalid.</li>
+            <li>Email address is invalid.</li>
+            <li>Email address already exists.</li>
+        </ul>
+    </div>
+
+    <div class="mt-6 text-center">
+        <a th:href="@{/admin/dashboard}"
+           class="inline-block px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors">
+            Back to Admin Dashboard
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
+

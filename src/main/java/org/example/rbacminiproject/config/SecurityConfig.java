@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String LOGIN_URL = "/login";
     private final RoleBasedAuthenticationSuccessHandler authenticationSuccessHandler;
 
     public SecurityConfig(RoleBasedAuthenticationSuccessHandler authenticationSuccessHandler) {
@@ -24,7 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(
                         auth ->
-                                auth.requestMatchers("/", "/signup", "/login", "/css/**", "/js/**")
+                                auth.requestMatchers("/", "/signup", LOGIN_URL, "/css/**", "/js/**")
                                         .permitAll()
                                         .requestMatchers("/admin/**")
                                         .hasRole("ADMIN")
@@ -34,12 +35,12 @@ public class SecurityConfig {
                                         .authenticated())
                 .formLogin(
                         form ->
-                                form.loginPage("/login")
+                                form.loginPage(LOGIN_URL)
                                         .successHandler(authenticationSuccessHandler)
                                         .permitAll())
                 .logout(
                         logout ->
-                                logout.logoutUrl("/logout").logoutSuccessUrl("/login").permitAll())
+                                logout.logoutUrl("/logout").logoutSuccessUrl(LOGIN_URL).permitAll())
                 .headers(headers -> headers.cacheControl(cache -> {}));
 
         return http.build();

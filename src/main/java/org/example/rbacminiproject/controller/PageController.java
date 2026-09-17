@@ -31,6 +31,13 @@ public class PageController {
                 && authentication.isAuthenticated()
                 && !(authentication instanceof AnonymousAuthenticationToken)) {
 
+            if (authentication.getAuthorities().stream()
+                    .anyMatch(authority ->
+                            authority.getAuthority().equals("ROLE_ADMIN"))) {
+
+                return "redirect:/admin/dashboard";
+            }
+
             return "redirect:/dashboard";
         }
 
