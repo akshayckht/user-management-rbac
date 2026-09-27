@@ -18,7 +18,6 @@
     --color-orange-300: oklch(83.7% 0.128 66.29);
     --color-orange-700: oklch(55.3% 0.195 38.402);
     --color-orange-900: oklch(40.8% 0.123 38.172);
-    --color-amber-100: oklch(96.2% 0.059 95.617);
     --color-green-50: oklch(98.2% 0.018 155.826);
     --color-green-300: oklch(87.1% 0.15 154.449);
     --color-green-700: oklch(52.7% 0.154 150.069);
@@ -65,7 +64,6 @@
     --color-white: #fff;
     --spacing: 0.25rem;
     --breakpoint-sm: 40rem;
-    --breakpoint-xl: 80rem;
     --container-xs: 20rem;
     --container-md: 28rem;
     --container-lg: 32rem;
@@ -401,9 +399,6 @@
   .inline-flex {
     display: inline-flex;
   }
-  .table {
-    display: table;
-  }
   .aspect-\[12\/11\] {
     aspect-ratio: 12/11;
   }
@@ -514,14 +509,8 @@
   .flex-1 {
     flex: 1;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .rotate-180 {
     rotate: 180deg;
@@ -531,9 +520,6 @@
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize {
-    resize: both;
   }
   .list-inside {
     list-style-position: inside;
@@ -767,9 +753,6 @@
   .object-contain {
     object-fit: contain;
   }
-  .p-0 {
-    padding: 0px;
-  }
   .p-0\.5 {
     padding: calc(var(--spacing) * 0.5);
   }
@@ -808,9 +791,6 @@
   }
   .py-2\.5 {
     padding-block: calc(var(--spacing) * 2.5);
-  }
-  .py-3 {
-    padding-block: calc(var(--spacing) * 3);
   }
   .py-3\.5 {
     padding-block: calc(var(--spacing) * 3.5);
@@ -951,9 +931,6 @@
   .text-white {
     color: var(--color-white);
   }
-  .underline {
-    text-decoration-line: underline;
-  }
   .opacity-0 {
     opacity: 0%;
   }
@@ -966,10 +943,6 @@
   }
   .\[box-shadow\:rgba\(149\,157\,165\,0\.3\)_0px_4px_12px\] {
     box-shadow: rgba(149,157,165,0.3) 0px 4px 12px;
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .outline-0 {
     outline-style: var(--tw-outline-style);
