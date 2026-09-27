@@ -142,8 +142,10 @@
                                     th:fiel="*{role}"
                                     id="roel" name="role"
                                     class="px-1 py-2.5 text-sm text-slate-900 bg-white w-full border-b-2 border-slate-300 focus:border-blue-600 outline-none">
-                                <option value="USER">USER</option>
-                                <option value="ADMIN">ADMIN</option>
+                                <option th:each="role : ${T(org.example.rbacminiproject.entity.Role).values()}"
+                                        th:value="${role}"
+                                        th:text="${role}">
+                                </option>
                             </select>
                             <p th:if="${#fields.hasErrors('role')}"
                                th:errors="*{role}"

@@ -45,7 +45,8 @@ public class AdminController {
 
     @GetMapping("/createuser")
     public String getUserForm(Model model) {
-        model.addAttribute("adminUserCreateRequest", new AdminUserCreateRequest(null, null, null, null));
+        model.addAttribute("adminUserCreateRequest",
+                new AdminUserCreateRequest(null, null, null, null));
         return "admin/createUser";
     }
 
@@ -84,7 +85,7 @@ public class AdminController {
         User user = adminService.getUserById(id);
 
         AdminUserUpdateRequest adminUserUpdateRequest =
-                new AdminUserUpdateRequest(user.getName(), user.getEmail(), user.getRole().name());
+                new AdminUserUpdateRequest(user.getName(), user.getEmail(), user.getRole());
 
         model.addAttribute("adminUserUpdateRequest", adminUserUpdateRequest);
         model.addAttribute("userid", id);

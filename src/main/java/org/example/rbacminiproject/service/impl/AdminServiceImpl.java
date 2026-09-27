@@ -5,6 +5,7 @@ import org.example.rbacminiproject.dto.AdminUserUpdateRequest;
 import org.example.rbacminiproject.entity.Role;
 import org.example.rbacminiproject.entity.User;
 import org.example.rbacminiproject.exception.DuplicateEmailException;
+import org.example.rbacminiproject.mapper.UserMapper;
 import org.example.rbacminiproject.repository.UserRepository;
 import org.example.rbacminiproject.service.AdminService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,10 +20,14 @@ public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public AdminServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AdminServiceImpl(UserRepository userRepository,
+                            PasswordEncoder passwordEncoder,
+                            UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -57,23 +62,14 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void createUser(AdminUserCreateRequest request) throws DuplicateEmailException {
+    public void createUser(AdminUserCreateRequest userCreateRequest) throws DuplicateEmailException {
 
-        if (userRepository.existsByEmail(request.email())) {
+        if (userRepository.existsByEmail(userCreateRequest.email())) {
             throw new DuplicateEmailException("Email id already registered");
         }
 
-        User user = new User();
-
-        user.setName(request.name());
-        user.setEmail(request.email());
-        user.setPassword(passwordEncoder.encode(request.password()));
-
-        if (Objects.equals(request.role(), Role.USER.name())) {
-            user.setRole(Role.USER);
-        } else if (Objects.equals(request.role(), Role.ADMIN.name())) {
-            user.setRole(Role.ADMIN);
-        }
+        User user = userMapper.mapToEntity(userCreateRequest);
+        user.setPassword(passwordEncoder.encode(userCreateRequest.password()));
 
         userRepository.save(user);
     }
@@ -82,24 +78,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void updateUser(Long id, AdminUserUpdateRequest request) throws DuplicateEmailException {
+    public void updateUser(Long id, AdminUserUpdateRequest updateRequest) throws DuplicateEmailException {
 
         User user = getUserById(id);
 
-        if (!user.getEmail().equalsIgnoreCase(request.email())
-                && userRepository.existsByEmail(request.email())) {
+        if (!user.getEmail().equalsIgnoreCase(updateRequest.email())
+                && userRepository.existsByEmail(updateRequest.email())) {
 
             throw new DuplicateEmailException("Email id already registered");
         }
 
-        user.setName(request.name());
-        user.setEmail(request.email());
-        if (request.role().equals(Role.USER.name())){
-            user.setRole(Role.USER);
-        }else if(request.role().equals(Role.ADMIN.name())){
-            user.setRole(Role.ADMIN);
-        }
-
+       user = userMapper.updateEntity(updateRequest,user);
 
         userRepository.save(user);
     }
