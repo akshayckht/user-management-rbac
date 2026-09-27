@@ -1,6 +1,5 @@
 package org.example.rbacminiproject.controller;
 
-import jakarta.servlet.http.HttpSession;
 
 import org.example.rbacminiproject.dto.LoginRequest;
 import org.example.rbacminiproject.dto.UserSignUpRequest;
@@ -32,6 +31,13 @@ public class PageController {
                 && authentication.isAuthenticated()
                 && !(authentication instanceof AnonymousAuthenticationToken)) {
 
+            if (authentication.getAuthorities().stream()
+                    .anyMatch(authority ->
+                            authority.getAuthority().equals("ROLE_ADMIN"))) {
+
+                return "redirect:/admin/dashboard";
+            }
+
             return "redirect:/dashboard";
         }
 
@@ -41,10 +47,9 @@ public class PageController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
+    public String dashboard(Model model) {
 
         return "dashboardUser";
     }
-
 
 }
